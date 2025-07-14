@@ -4,7 +4,7 @@ import HangmanDrawing from "./components/HangmanDrawing";
 import HangmanWord from "./components/HangmanWord";
 import Keyboard from "./components/Keyboard";
 
-import { HANGMAN_WORDS, WORDS, type HangWord } from "./utils/words";
+import { HANGMAN_WORDS, WORDS } from "./utils/words";
 
 export default function App() {
   const [wordToGuess, setWordToGuess] = useState(
