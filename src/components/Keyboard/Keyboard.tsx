@@ -44,7 +44,7 @@ export default function Keyboard({
   disabled = false,
 }: KeyboardProps) {
   return (
-    <div className=" grid grid-cols-7 sm:grid-cols-9 md:grid-cols-13 gap-2">
+    <div className=" grid grid-cols-7 sm:grid-cols-9 gap-2 ">
       {KEYS.map((key) => (
         <Letter
           addGuessedLetter={addGuessedLetter}
@@ -81,7 +81,7 @@ function Letter({
     <button
       onClick={handleAddGuessedLetter}
       className={`
-    w-10 h-10 sm:w-12 sm:h-12 md:w-8 md:h-8 border-2 border-gray-300 rounded-md font-bold text-lg
+    w-10 h-10 sm:w-12 sm:h-12 md:w-10 md:h-10 border-2 border-gray-300 rounded-md font-bold text-lg 
     flex items-center justify-center cursor-pointer select-none
     ${isActive ? "bg-indigo-100 border-indigo-500 text-indigo-700" : ""}
     ${

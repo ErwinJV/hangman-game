@@ -1,125 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
+import { IoGameController } from "react-icons/io5";
 import HangmanDrawing from "./components/HangmanDrawing";
 import HangmanWord from "./components/HangmanWord";
 import Keyboard from "./components/Keyboard";
 
-const WORDS = [
-  "NARUTO",
-  "GOKU",
-  "LIGHT",
-  "SAITAMA",
-  "LEVI",
-  "EREN",
-  "TANJIRO",
-  "NEZUKO",
-  "LUFY",
-  "ZORO",
-  "SAKURA",
-  "HINATA",
-  "DEKU",
-  "BAKUGO",
-  "TODOROKI",
-  "KAKASHI",
-  "ITACHI",
-  "MADARA",
-  "ONEPIECE",
-  "DRAGONBALL",
-  "ATTACKONTITAN",
-  "DEATHNOTE",
-  "DEMONSLAYER",
-  "MYHEROACADEMIA",
-  "NARUTOSHIPPUDEN",
-  "TOKYOGHOUL",
-  "JUJUTSUKAISEN",
-  "HUNTERXHUNTER",
-  "BLEACH",
-  "FULLMETALALCHEMIST",
+import { HANGMAN_WORDS, WORDS, type HangWord } from "./utils/words";
 
-  // Tecnología (20 palabras)
-  "JAVASCRIPT",
-  "TYPESCRIPT",
-  "REACT",
-  "ANGULAR",
-  "PYTHON",
-  "JAVA",
-  "KOTLIN",
-  "SWIFT",
-  "ALGORITMO",
-  "FIREBASE",
-  "POSTGRESQL",
-  "MONGODB",
-  "MICROSERVICIOS",
-  "BLOCKCHAIN",
-  "INTELIGENCIAARTIFICIAL",
-  "REALIDADAUMENTADA",
-  "CLOUDCOMPUTING",
-  "INTERNETOFTHINGS",
-  "CYBERSECURITY",
-  "DEVOPS",
-
-  // Cocina Árabe (10 palabras)
-  "HUMMUS",
-  "FALAFEL",
-  "SHAWARMA",
-  "TABULE",
-  "KEBAB",
-  "BAKLAVA",
-  "MOUSSAKA",
-  "PITA",
-  "TAHINI",
-  "DOLMA",
-
-  // Cocina Oriental (10 palabras)
-  "SUSHI",
-  "RAMEN",
-  "DIMSUM",
-  "PADTHAI",
-  "TERIYAKI",
-  "TEMPURA",
-  "UDON",
-  "WASABI",
-  "MISO",
-  "GYOZA",
-
-  // Cocina Francesa (10 palabras)
-  "CROISSANT",
-  "BOEUFBOURGUIGNON",
-  "RATATOUILLE",
-  "QUICHE",
-  "CREPE",
-  "MACARON",
-  "PROVENCE",
-  "BOUILLABAISSE",
-  "FOIEGRAS",
-  "SOUFFLE",
-
-  // Cocina Italiana (10 palabras)
-  "PIZZA",
-  "PASTA",
-  "LASAGNA",
-  "RISOTTO",
-  "TIRAMISU",
-  "CARBONARA",
-  "PESTO",
-  "BRUSCHETTA",
-  "PANNACOTTA",
-  "GNOCCHI",
-
-  // Cocina Venezolana (10 palabras)
-  "AREAPA",
-  "CACHAPA",
-  "PABELLON",
-  "HALLACA",
-  "ASADONEGRO",
-  "TIZANA",
-  "MANDOCA",
-  "CHICHA",
-  "QUESILLO",
-  "TELITA",
-];
 export default function App() {
   const [wordToGuess, setWordToGuess] = useState(
     WORDS[Math.floor(Math.random() * WORDS.length)]
+  );
+  const hintWord = HANGMAN_WORDS.find(
+    (hangmanWord) => hangmanWord.word === wordToGuess
   );
   const [guessedLetters, setGuessedLetters] = useState<string[]>([]);
 
@@ -172,19 +64,23 @@ export default function App() {
         </h1>
 
         <div className="mb-6">
+          <h3 className="text-2xl">PISTA: {hintWord?.hint}</h3>
+        </div>
+        <div className="mb-6">
           {isWinner && (
-            <div className="text-2xl font-bold text-green-600 animate-bounce">
+            <div className="text-2xl font-bold text-green-600 animate-bounce transition-all duration-300 ease-in-out">
               ¡Ganaste! 🎉
             </div>
           )}
           {isLoser && (
-            <div className="text-2xl font-bold text-red-600">
+            <div className="text-2xl font-bold text-red-600 transition-all duration-300 ease-in-out">
               ¡Perdiste! 😢 La palabra era: {wordToGuess}
             </div>
           )}
+          {!isLoser && !isWinner && <div className="h-[32px]"></div>}
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+        <div className="flex flex-col lg:flex-row justify-between items-center gap-8">
           <div className="w-full md:w-1/2 lg:w-1/3">
             <HangmanDrawing numberOfGuesses={incorrectLetters.length} />
           </div>
@@ -211,10 +107,14 @@ export default function App() {
 
         {(isWinner || isLoser) && (
           <button
-            className="mt-8 px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors shadow-md"
+            className="cursor-pointer mt-8 px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors shadow-md"
             onClick={restartGame}
           >
-            Jugar de nuevo
+            <div className="flex items-center">
+              <IoGameController size={32} />
+              <div className="w-[20px]"></div>{" "}
+              <span className="text-xl">Play Again</span>
+            </div>
           </button>
         )}
       </div>
