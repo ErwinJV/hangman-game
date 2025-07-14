@@ -1,58 +1,96 @@
-type HangmanDrawingProps = {
-  numberOfGuesses: number;
-};
+import { useRef, useEffect } from "react";
 
-const BODY_PARTS = [
-  <div
-    key="head"
-    className="w-12 h-12 rounded-full border-4 border-indigo-700 absolute top-10 right-[-20px]"
-  />,
-  <div
-    key="body"
-    className="w-1 h-20 bg-indigo-700 absolute top-[60px] right-0"
-  />,
-  <div
-    key="right-arm"
-    className="w-16 h-1 bg-indigo-700 absolute top-[80px] right-[-16px] rotate-[-30deg] origin-bottom-left"
-  />,
-  <div
-    key="left-arm"
-    className="w-16 h-1 bg-indigo-700 absolute top-[80px] right-[1px] rotate-[30deg] origin-bottom-right"
-  />,
-  <div
-    key="right-leg"
-    className="w-16 h-1 bg-indigo-700 absolute top-[140px] right-[-15px] rotate-[60deg] origin-bottom-left"
-  />,
-  <div
-    key="left-leg"
-    className="w-16 h-1 bg-indigo-700 absolute top-[140px] right-[1px] rotate-[-60deg] origin-bottom-right"
-  />,
-];
+interface HangmanCanvasProps {
+  numberOfGuesses: number;
+}
 
 export default function HangmanDrawing({
   numberOfGuesses,
-}: HangmanDrawingProps) {
-  return (
-    <div className="relative" style={{ height: "250px", width: "200px" }}>
-      {/* Base */}
-      <div className="h-2 w-32 bg-gray-800 ml-4" />
+}: HangmanCanvasProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-      {/* Poste vertical */}
-      <div className="h-40 w-2 bg-gray-800 ml-4" />
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-      {/* Poste horizontal */}
-      <div className="h-2 w-24 bg-gray-800 ml-4" />
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-      {/* Cuerda */}
-      <div className="h-8 w-1 bg-gray-400 absolute top-0 right-0" />
+    // Limpiar el canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = "#6366f1";
+    ctx.lineWidth = 2;
 
-      {/* Partes del cuerpo */}
-      {BODY_PARTS.slice(0, numberOfGuesses)}
+    // Dibujar la horca base
+    ctx.beginPath();
+    ctx.moveTo(10, 190);
+    ctx.lineTo(90, 190);
+    ctx.moveTo(50, 190);
+    ctx.lineTo(50, 20);
+    ctx.lineTo(120, 20);
+    ctx.lineTo(120, 40);
+    ctx.stroke();
 
-      {/* Contador de intentos */}
-      <div className="absolute bottom-[-40px] left-0 right-0 text-center text-gray-700 font-medium">
-        Intentos restantes: {6 - numberOfGuesses}
-      </div>
-    </div>
-  );
+    // Dibujar partes del ahorcado según los intentos
+    if (numberOfGuesses > 0) {
+      // Cabeza
+      ctx.beginPath();
+      ctx.arc(120, 60, 20, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    if (numberOfGuesses > 1) {
+      // Cuerpo
+      ctx.beginPath();
+      ctx.moveTo(120, 80);
+      ctx.lineTo(120, 140);
+      ctx.stroke();
+    }
+
+    if (numberOfGuesses > 2) {
+      // Brazo izquierdo
+      ctx.beginPath();
+      ctx.moveTo(120, 90);
+      ctx.lineTo(90, 110);
+      ctx.stroke();
+    }
+
+    if (numberOfGuesses > 3) {
+      // Brazo derecho
+      ctx.beginPath();
+      ctx.moveTo(120, 90);
+      ctx.lineTo(150, 110);
+      ctx.stroke();
+    }
+
+    if (numberOfGuesses > 4) {
+      // Pierna izquierda
+      ctx.beginPath();
+      ctx.moveTo(120, 140);
+      ctx.lineTo(90, 170);
+      ctx.stroke();
+    }
+
+    if (numberOfGuesses > 5) {
+      // Pierna derecha
+      ctx.beginPath();
+      ctx.moveTo(120, 140);
+      ctx.lineTo(150, 170);
+      ctx.stroke();
+
+      // Ojos tristes (opcional)
+      ctx.beginPath();
+      ctx.moveTo(112, 55);
+      ctx.quadraticCurveTo(120, 65, 128, 55);
+      ctx.stroke();
+    } else {
+      // Ojos normales (antes de perder)
+      ctx.beginPath();
+      ctx.arc(112, 55, 3, 0, Math.PI * 2);
+      ctx.arc(128, 55, 3, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }, [numberOfGuesses]);
+
+  return <canvas ref={canvasRef} width={200} height={200} />;
 }
