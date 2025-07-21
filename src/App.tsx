@@ -1,10 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
-import { IoGameController } from "react-icons/io5";
+import {
+  IoGameController,
+  IoLogoGithub,
+  IoLogoLinkedin,
+} from "react-icons/io5";
 import HangmanDrawing from "./components/HangmanDrawing";
 import HangmanWord from "./components/HangmanWord";
 import Keyboard from "./components/Keyboard";
 
 import { HANGMAN_WORDS, WORDS } from "./utils/words";
+import Pad from "./components/Pad";
 
 export default function App() {
   const [wordToGuess, setWordToGuess] = useState(
@@ -117,6 +122,26 @@ export default function App() {
             </div>
           </button>
         )}
+      </div>
+      <Pad amt={100} />
+      <div className="flex">
+        <a
+          className="bg-white rounded-full"
+          href="https://github.com/ErwinJV"
+          target="_blank"
+          rel="noopener noreferrer "
+        >
+          <IoLogoGithub size={34} />
+        </a>
+        <Pad amt={30} row />
+        <a
+          className="bg-white"
+          href="https://www.linkedin.com/in/erwin-jimenez"
+          target="_blank"
+          rel="noopener noreferrer "
+        >
+          <IoLogoLinkedin size={34} />
+        </a>
       </div>
     </div>
   );
